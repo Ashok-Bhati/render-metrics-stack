@@ -1,0 +1,28 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+        auth:
+          authenticator: bearertokenauth/render
+
+extensions:
+  bearertokenauth/render:
+    scheme: "Bearer"
+    tokens: ["${env:RENDER_METRICS_TOKEN}"]
+
+processors:
+  batch:
+    timeout: 10s
+
+exporters:
+  prometheusremotewrite:
+    endpoint: "http://localhost:9090/api/v1/write"
+
+service:
+  extensions: [bearertokenauth/render]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheusremotewrite]

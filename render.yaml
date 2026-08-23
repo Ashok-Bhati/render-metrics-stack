@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: collector-prometheus
+    runtime: docker
+    dockerfilePath: ./collector-prometheus/Dockerfile
+    dockerContext: ./collector-prometheus
+    disk:
+      name: prom-data
+      mountPath: /prometheus
+      sizeGB: 1
+    envVars:
+      - key: RENDER_METRICS_TOKEN
+        generateValue: true
+      - key: PORT
+        value: 4318
+
+  - type: web
+    name: grafana
+    runtime: docker
+    dockerfilePath: ./grafana/Dockerfile
+    dockerContext: ./grafana
+    disk:
+      name: grafana-data
+      mountPath: /var/lib/grafana
+      sizeGB: 1
+    envVars:
+      - key: GF_SECURITY_ADMIN_PASSWORD
+        generateValue: true
