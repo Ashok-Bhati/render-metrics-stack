@@ -6,8 +6,6 @@ RUN apk add --no-cache supervisor ca-certificates
 
 COPY --from=collector /otelcol-contrib /usr/bin/otelcol-contrib
 COPY --from=prometheus /bin/prometheus /usr/bin/prometheus
-COPY --from=prometheus /etc/prometheus/console_libraries /etc/prometheus/console_libraries
-COPY --from=prometheus /etc/prometheus/consoles /etc/prometheus/consoles
 
 COPY otel-collector-config.yaml /etc/otelcol/config.yaml
 COPY prometheus.yml /etc/prometheus/prometheus.yml
